@@ -51,7 +51,10 @@ public class ProveedorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Proveedor> getProveedoresXid(@PathVariable int id) {
-        Proveedor proveedor = proveedorService.findxId(id);
-        return proveedor.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        Proveedor buscado = proveedorService.findxId(id);
+        if(buscado==null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(buscado,HttpStatus.OK);
     }
 }
