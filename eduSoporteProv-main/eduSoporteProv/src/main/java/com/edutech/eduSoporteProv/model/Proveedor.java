@@ -33,12 +33,6 @@ public class Proveedor {
     @Column(length = 200, nullable = false, unique = false)
     private String contacto;
 
-    public Object map(Object object) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'map'");
-    }
-
-
 }
 
-// TERMINAR DE HACER EL CRUD COMPLETO, NO SOLO EL AGREGAR
+

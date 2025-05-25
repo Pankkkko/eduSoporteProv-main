@@ -29,7 +29,6 @@ public abstract class Usuario {
     @Column(length = 50, nullable = true)
     private String nombrereal;
 
-    @Column(length = 50, nullable = false)
-    private String rol;
+    //private RolUsuario rolUsuario;
 }
 

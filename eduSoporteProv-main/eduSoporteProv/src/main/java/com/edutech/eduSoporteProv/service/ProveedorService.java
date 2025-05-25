@@ -13,7 +13,7 @@ public class ProveedorService{
     @Autowired
     private ProveedorRepository proveedorRepository;
 
-    public Proveedor save(Proveedor proveedor){ // metodo para agregar proveedores, faltaba agregar eñ package de service
+    public Proveedor save(Proveedor proveedor){ 
         return proveedorRepository.save(proveedor);
     }
 
