@@ -5,5 +5,5 @@ public enum RolUsuario {
     ADMINISTRADOR,
     SOPORTE,
     ESTUDIANTE,
-    INSTRUCTOR,
+    INSTRUCTOR
 }

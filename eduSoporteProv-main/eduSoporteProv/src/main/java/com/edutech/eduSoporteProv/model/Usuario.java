@@ -1,6 +1,8 @@
 package com.edutech.eduSoporteProv.model;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,6 +31,8 @@ public abstract class Usuario {
     @Column(length = 50, nullable = true)
     private String nombrereal;
 
-    //private RolUsuario rolUsuario;
+    @Enumerated(EnumType.STRING)
+    private RolUsuario rolUsuario = RolUsuario.USUARIO;
+
 }
 
