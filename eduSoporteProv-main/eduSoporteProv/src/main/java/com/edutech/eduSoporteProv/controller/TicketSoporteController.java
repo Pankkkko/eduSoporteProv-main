@@ -37,8 +37,6 @@ public class TicketSoporteController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(buscado, HttpStatus.OK);
-
-    
     }
 
     @PutMapping("/{id}")
