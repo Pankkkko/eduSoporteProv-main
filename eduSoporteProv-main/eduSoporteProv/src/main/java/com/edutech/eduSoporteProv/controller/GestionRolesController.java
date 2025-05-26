@@ -17,7 +17,7 @@ import com.edutech.eduSoporteProv.service.GestionRolesService;
 
 
 @RestController
-@RequestMapping("/api/rol")
+@RequestMapping("/api/roles")
 public class GestionRolesController {
     // agregar funciones get y put para obtener y modificar los roles de los usuarios
 

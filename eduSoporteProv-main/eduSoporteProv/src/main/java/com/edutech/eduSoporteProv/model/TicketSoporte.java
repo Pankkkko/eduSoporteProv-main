@@ -1,42 +1,44 @@
 package com.edutech.eduSoporteProv.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@MappedSuperclass
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "usuario")
 
-public abstract class Usuario {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "ticket")
+public abstract class TicketSoporte {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(length = 50, nullable = false)
-    private String correo;
+    @Column(length = 30, nullable = false)
+    private String titulo;
 
-    @Column(length = 50, nullable = false)
-    private String password;
+    @Column(updatable = false)
+    private LocalDateTime fechaCreacion;
 
-    @Column(length = 50, nullable = false, unique = true)
-    private String usuario;
+    @Column(updatable = true)
+    private LocalDateTime fechaActualizacion;
 
-    @Column(length = 50, nullable = true)
-    private String nombrereal;
+    @Column(length = 500, nullable = false)
+    private String descripcion;
 
     @Enumerated(EnumType.STRING)
-    private RolUsuario rolUsuario = RolUsuario.USUARIO;
+    private EstadoTicket estadoTicket = EstadoTicket.CREADO;
+
 
 }
-
