@@ -41,4 +41,5 @@ public abstract class TicketSoporte {
     private EstadoTicket estadoTicket = EstadoTicket.CREADO;
 
 
+
 }

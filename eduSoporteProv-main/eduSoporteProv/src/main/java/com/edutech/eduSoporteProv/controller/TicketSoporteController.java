@@ -12,45 +12,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edutech.eduSoporteProv.model.TicketSoporte;
+import com.edutech.eduSoporteProv.repository.TicketRepository;
 import com.edutech.eduSoporteProv.service.TicketService;
 
 @RestController
 @RequestMapping("/api/tickets")
 public class TicketSoporteController {
     @Autowired
-    private TicketService ticketService;
+    private TicketRepository ticketRepository;
+
+    private final TicketService ticketService;
+
+    @Autowired
+    public TicketSoporteController(TicketService ticketService) {
+        this.ticketService = ticketService;
+    }
 
     @PostMapping
-    public ResponseEntity<TicketSoporte> postTicket(@RequestBody TicketSoporte ticket){
-        TicketSoporte buscado = ticketService.findxId(ticket.getId());
-        if (buscado == null){
-            return new ResponseEntity<>(ticketService.save(ticket), HttpStatus.ACCEPTED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
-        }
+    public ResponseEntity<TicketSoporte> crearTicket(@RequestBody TicketSoporte ticket) {
+        TicketSoporte nuevoTicket = ticketService.crearTicket(ticket);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoTicket);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TicketSoporte> getTicketXid(@PathVariable int id){
-        TicketSoporte buscado = ticketService.findxId(id);
-        if(buscado == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(buscado, HttpStatus.OK);
+    public ResponseEntity<TicketSoporte> buscarxId(@PathVariable int id) {
+        return ticketService.buscarxId(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TicketSoporte> updateTicket(@PathVariable int id, @RequestBody TicketSoporte ticket){
-        TicketSoporte existente = ticketService.findxId(id);
-        if (existente == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        existente.setDescripcion(ticket.getDescripcion());
-        existente.setEstadoTicket(ticket.getEstadoTicket());
-        existente.setFechaActualizacion(ticket.getFechaActualizacion());
-
-        TicketSoporte actualizado = ticketService.save(existente);
-        return new ResponseEntity<>(actualizado, HttpStatus.OK);
+    public ResponseEntity<TicketSoporte> actualizarTicket(@PathVariable int id, @RequestBody TicketSoporte updatedTicket) {
+        return ticketService.actualizarTicket(id, updatedTicket)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }
