@@ -39,5 +39,8 @@ public abstract class Usuario {
     @Enumerated(EnumType.STRING)
     private RolUsuario rolUsuario = RolUsuario.USUARIO;
 
+    @Column(nullable = false)
+    private boolean esvisible = true; // Por defecto, el usuario está activo
+
 }
 
