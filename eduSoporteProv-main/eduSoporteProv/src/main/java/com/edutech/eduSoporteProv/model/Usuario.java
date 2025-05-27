@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "usuario")
 
-public abstract class Usuario {
+public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -37,10 +37,11 @@ public abstract class Usuario {
     private String nombrereal;
 
     @Enumerated(EnumType.STRING)
-    private RolUsuario rolUsuario = RolUsuario.USUARIO;
+    @Column(nullable = false)
+    private RolUsuario rolUsuario;
 
     @Column(nullable = false)
-    private boolean esvisible = true; // Por defecto, el usuario está activo
+    private boolean esvisible; // Por defecto, el usuario está activo
 
 }
 

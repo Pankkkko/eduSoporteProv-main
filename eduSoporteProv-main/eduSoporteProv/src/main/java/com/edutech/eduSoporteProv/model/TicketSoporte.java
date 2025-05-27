@@ -20,25 +20,26 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "ticket")
-public abstract class TicketSoporte {
+public   class TicketSoporte {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 100, nullable = false)
     private String titulo;
 
     @Column(updatable = false)
     private LocalDateTime fechaCreacion;
 
-    @Column(updatable = true)
+    @Column(updatable = false)
     private LocalDateTime fechaActualizacion;
 
     @Column(length = 500, nullable = false)
     private String descripcion;
 
     @Enumerated(EnumType.STRING)
-    private EstadoTicket estadoTicket = EstadoTicket.CREADO;
+    @Column(nullable = false)
+    private EstadoTicket estadoTicket;
 
 
 

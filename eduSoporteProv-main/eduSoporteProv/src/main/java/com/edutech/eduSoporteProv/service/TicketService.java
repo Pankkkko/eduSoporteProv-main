@@ -34,4 +34,12 @@ public class TicketService {
         });
 
     }
+
+    public boolean eliminarTicket(int id) {
+        if (ticketRepository.existsById(id)) {
+            ticketRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }

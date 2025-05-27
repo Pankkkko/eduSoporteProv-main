@@ -1,8 +1,11 @@
 package com.edutech.eduSoporteProv.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,21 +20,26 @@ import com.edutech.eduSoporteProv.service.TicketService;
 
 @RestController
 @RequestMapping("/api/tickets")
-public class TicketSoporteController {
+public class TicketController {
     @Autowired
     private TicketRepository ticketRepository;
 
     private final TicketService ticketService;
 
     @Autowired
-    public TicketSoporteController(TicketService ticketService) {
+    public TicketController(TicketService ticketService) {
         this.ticketService = ticketService;
     }
 
     @PostMapping
-    public ResponseEntity<TicketSoporte> crearTicket(@RequestBody TicketSoporte ticket) {
-        TicketSoporte nuevoTicket = ticketService.crearTicket(ticket);
+    public ResponseEntity<TicketSoporte> crearTicket(@RequestBody TicketSoporte ticketSoporte) {
+        TicketSoporte nuevoTicket = ticketService.crearTicket(ticketSoporte);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoTicket);
+    }
+
+    @GetMapping
+    public List<TicketSoporte> listarTickets() {
+        return ticketRepository.findAll();
     }
 
     @GetMapping("/{id}")
@@ -46,6 +54,15 @@ public class TicketSoporteController {
         return ticketService.actualizarTicket(id, updatedTicket)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarTicket(@PathVariable int id) {
+        if (ticketService.eliminarTicket(id)) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }
