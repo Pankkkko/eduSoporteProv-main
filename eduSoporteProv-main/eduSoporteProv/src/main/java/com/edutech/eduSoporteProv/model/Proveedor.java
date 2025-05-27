@@ -27,7 +27,7 @@ public class Proveedor {
     @Column(length = 30, nullable = false, unique = false)
     private String nombre;
 
-    @Column(length = 30, nullable = false, unique = true)
+    @Column(length = 30, nullable = false, unique = false)
     private String categoria;
 
     @Column(length = 200, nullable = false, unique = false)
