@@ -15,62 +15,54 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edutech.eduSoporteProv.model.Proveedor;
+import com.edutech.eduSoporteProv.repository.ProveedorRepository;
 import com.edutech.eduSoporteProv.service.ProveedorService;
 
 @RestController
 @RequestMapping("/api/proveedores")
 public class ProveedorController {
-    @Autowired
-    private ProveedorService proveedorService;
+    private final ProveedorService proveedorService;
 
-    @GetMapping
-    public ResponseEntity<List<Proveedor>> getProveedores(){
-        List<Proveedor> proveedores = proveedorService.findAll();
-        if(!proveedores.isEmpty()){
-            return new ResponseEntity<>(proveedores, HttpStatus.OK);
-        // si proveedores tiene un objeto
-        }
-        // si no contiene proveedores
-        return ResponseEntity.noContent().build();
+    @Autowired
+    private ProveedorRepository proveedorRepository;
+
+    @Autowired
+    public ProveedorController(ProveedorService proveedorService) {
+        this.proveedorService = proveedorService;
     }
 
     @PostMapping
-    public ResponseEntity<Proveedor> postProveedor(@RequestBody Proveedor proveedor){
-        Proveedor buscado = proveedorService.findxId(proveedor.getId());
-        if (buscado == null){
-            return new ResponseEntity<>(proveedorService.save(proveedor), HttpStatus.ACCEPTED);
-        }   else{
-            return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
-        }
+    public ResponseEntity<Proveedor> crearProveedor(@RequestBody Proveedor proveedor) {
+        Proveedor nuevoProveedor = proveedorService.crearProveedor(proveedor);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoProveedor);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProveedor(@PathVariable int id){
-        proveedorService.deletexId(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping
+    public List<Proveedor> obtenerTodosLosProveedores() {
+        return proveedorRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Proveedor> getProveedoresXid(@PathVariable int id) {
-        Proveedor buscado = proveedorService.findxId(id);
-        if(buscado==null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(buscado,HttpStatus.OK);
+    public ResponseEntity<Proveedor> obtenerProveedorPorId(@PathVariable int id) {
+        return proveedorService.buscarxId(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(()-> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Proveedor> updateProveedor(@PathVariable int id, @RequestBody Proveedor proveedor) {
-        Proveedor existente = proveedorService.findxId(id);
-        if (existente == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Proveedor> actualizarProveedor(@PathVariable int id, @RequestBody Proveedor updatedProveedor) {
+        return proveedorService.actualizarProveedor(id, updatedProveedor)
+                .map(ResponseEntity::ok)
+                .orElseGet(()-> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarProveedor(@PathVariable int id) {
+        if(proveedorService.eliminarProveedor(id)){
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
-        existente.setNombre(proveedor.getNombre());
-        existente.setCategoria(proveedor.getCategoria());
-        existente.setContacto(proveedor.getContacto());
-        
-        Proveedor actualizado = proveedorService.save(existente);
-        return new ResponseEntity<>(actualizado, HttpStatus.OK);
     }
 }
 

@@ -1,6 +1,6 @@
 package com.edutech.eduSoporteProv.service;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,23 +10,36 @@ import com.edutech.eduSoporteProv.repository.ProveedorRepository;
 
 @Service
 public class ProveedorService{
-    @Autowired
-    private ProveedorRepository proveedorRepository;
+    private final ProveedorRepository proveedorRepository;
 
-    public Proveedor save(Proveedor proveedor){ 
+    @Autowired
+    public ProveedorService(ProveedorRepository proveedorRepository) {
+        this.proveedorRepository = proveedorRepository;
+    }
+
+    public Proveedor crearProveedor(Proveedor proveedor) {
         return proveedorRepository.save(proveedor);
     }
 
-    public List<Proveedor> findAll(){
-        return proveedorRepository.findAll();
-    }
-
-    public Proveedor findxId(int id){
+    public Optional<Proveedor> buscarxId(int id) {
         return proveedorRepository.findById(id);
     }
+    
+    public Optional<Proveedor> actualizarProveedor(int id, Proveedor updatedProveedor) {
+        return proveedorRepository.findById(id).map(proveedor -> {
+            proveedor.setNombre(updatedProveedor.getNombre());
+            proveedor.setCategoria(updatedProveedor.getCategoria());
+            proveedor.setContacto(updatedProveedor.getContacto());
+            return proveedorRepository.save(proveedor);
+        });
 
-    public Proveedor deletexId(int id){
-        return proveedorRepository.deleteById(id);
     }
 
+    public boolean eliminarProveedor(int id) {
+        if (proveedorRepository.existsById(id)) {
+            proveedorRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }
