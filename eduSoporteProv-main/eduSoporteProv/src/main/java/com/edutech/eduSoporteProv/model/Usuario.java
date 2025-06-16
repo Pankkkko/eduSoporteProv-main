@@ -41,7 +41,7 @@ public class Usuario {
     private RolUsuario rolUsuario;
 
     @Column(nullable = false)
-    private boolean esvisible; // Por defecto, el usuario está activo
+    private boolean esvisible; 
 
 }
 
